@@ -1,7 +1,7 @@
 from django.urls import reverse_lazy
 from django.views import generic
 from .models import Task, Category
-from .forms import TaskForm, CategoryForm
+from .forms import TaskForm, CategoryForm, FilterForm
 
 
 
@@ -31,6 +31,7 @@ class AllTasksView(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
+        context['form'] = FilterForm
         return context
 
     
