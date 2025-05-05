@@ -17,8 +17,8 @@ class TaskForm(forms.ModelForm):
 
     
 class FilterForm(forms.Form):
-	category = forms.ChoiceField(widget=forms.RadioSelect)
-	priority = forms.ChoiceField(widget=forms.RadioSelect, choices=Task.PRIORITY_CHOICES)
+	category = forms.ChoiceField(widget=forms.RadioSelect, required=False)
+	priority = forms.ChoiceField(widget=forms.RadioSelect, choices=Task.PRIORITY_CHOICES, required=False)
  
 	
 	def __init__(self, *args, **kwargs):

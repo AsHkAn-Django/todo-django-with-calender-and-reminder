@@ -5,7 +5,7 @@
   <div class="container mt-5">
     <div class="list-group mb-5">
            <!-- form -->
-      <form action="" method="post">
+      <form action="{% url 'myApp:filter_list' %}" method="post">
         {% csrf_token %}
         {% bootstrap_form form %}
         <button type="submit" class="btn btn-outline-secondary">Search</button>

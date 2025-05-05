@@ -5,17 +5,17 @@
   <div class="container mt-5">
     <div class="list-group mb-5">
            <!-- form -->
-      <form action="" method="post">
+      <form action="{% url 'myApp:filter_list' %}" method="post">
         {% csrf_token %}
         {% bootstrap_form form %}
-        <button type="submit" class="btn btn-outline-secondary">Search</button>
+        <button type="submit" class="btn btn-outline-secondary">Filter</button>
       </form>
     </div>
 
-    <h3 class="text-center mb-4 text-success">List of tasks for {{ category }}</h3>
+    <h3 class="text-center mb-4 text-success">List of tasks</h3>
     
     <div class="row justify-content-center">
-      {% for task in category.tasks.all %}
+      {% for task in tasks %}
         <div class="col-md-4 mb-4">
           <div class="card shadow-lg">
             <div class="card-header bg-primary text-white">

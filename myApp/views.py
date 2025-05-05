@@ -1,5 +1,7 @@
 from django.urls import reverse_lazy
 from django.views import generic
+from django.shortcuts import render
+
 from .models import Task, Category
 from .forms import TaskForm, CategoryForm, FilterForm
 
@@ -8,20 +10,26 @@ from .forms import TaskForm, CategoryForm, FilterForm
 class IndexView(generic.TemplateView):
     template_name = "myApp/index.html"
     
-    
-
-class FilterListView(generic.ListView):
-    context_object_name = 'categories'
-    template_name = "myApp/filter_list.html"
-
-    def get_queryset(self):
-        return super().get_queryset()
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['form'] = FilterForm        
-        return context
+ 
       
+def filter_list(request):
+    tasks = Task.objects.all()
+    form = FilterForm(request.POST or None)
+
+    if request.method == "POST":
+        if form.is_valid():
+            category = form.cleaned_data['category']
+            priority = form.cleaned_data['priority']
+            if category:
+                tasks = tasks.filter(category_id=category)
+            if priority:
+                tasks = tasks.filter(priority=priority)
+    else:
+        form = FilterForm()
+
+    print(tasks)
+    return render(request, 'myApp/filter_list.html', {'tasks': tasks, 'form': form})
+
 
 
 class AllTasksView(generic.ListView):
