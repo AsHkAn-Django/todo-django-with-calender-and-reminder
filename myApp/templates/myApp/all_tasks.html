@@ -1,38 +1,46 @@
-{% extends 'base.html' %}
-{% load django_bootstrap5 %}
-
-{% block content %}
-  <div class="container mt-5">
-    <div class="list-group mb-5">
-           <!-- form -->
-      <form action="{% url 'myApp:filter_list' %}" method="post">
-        {% csrf_token %}
-        {% bootstrap_form form %}
-        <button type="submit" class="btn btn-outline-secondary">Search</button>
-      </form>
-    </div>
-
-    <h3 class="text-center mb-4 text-success">List of tasks for All Tasks</h3>
-
-    <div class="row justify-content-center">
-      {% for task in tasks %}
-        <div class="col-md-4 mb-4">
-          <div class="card shadow-lg">
-            <div class="card-header bg-primary text-white">
-              {{ task.category }}
-            </div>
-            <div class="card-body">
-              <h5 class="card-title">{{ task.title }}</h5>
-              <p class="card-text">{{ task.description }}</p>
-              <a href="#" class="btn btn-outline-warning">Edit</a>
-              <a href="#" class="btn btn-outline-danger">Delete</a>
-            </div>
-            <div class="card-footer text-muted">
-              Due date: {{ task.deadline }}
-            </div>
-          </div>
-        </div>
-      {% endfor %}
-    </div>
+{% extends 'base.html' %} {% load django_bootstrap5 %} {% block content %}
+<div class="container mt-5">
+  <div class="list-group mb-5">
+    <!-- form -->
+    <form action="{% url 'myApp:filter_list' %}" method="post">
+      {% csrf_token %} {% bootstrap_form form %}
+      <button type="submit" class="btn btn-outline-secondary">Search</button>
+    </form>
   </div>
+
+  <h3 class="text-center mb-4 text-success">List of tasks for All Tasks</h3>
+
+  <div class="row justify-content-center">
+    {% for task in tasks %}
+    <div class="col-md-4 mb-4">
+      <div class="card shadow-lg">
+        <div
+          class="card-header {% if task.overdue %}bg-danger text-white{% else %}bg-primary{% endif %} text-white"
+        >
+          {{ task.category }} - <strong>{% if task.overdue %}
+          <span>Overdue</span>
+          {% else %}
+          <span>On Time</span>
+          {% endif %}</strong>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{ task.title }}</h5>
+          <p class="card-text">{{ task.description }}</p>
+          <a
+            href="{% url 'myApp:edit_task' task.pk %}"
+            class="btn btn-sm btn-outline-warning"
+            >Edit</a
+          >
+          <a
+            href="{% url 'myApp:delete_task' task.pk %}"
+            class="btn btn-sm btn-outline-danger"
+            >Delete</a
+          >
+        </div>
+        <div class="card-footer text-muted">Due date: {{ task.deadline }}</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
 {% endblock content %}
