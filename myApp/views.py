@@ -10,15 +10,16 @@ class IndexView(generic.TemplateView):
     
     
 
-class CategoryFilterListView(generic.ListView):
-    model = Category
+class FilterListView(generic.ListView):
     context_object_name = 'categories'
-    template_name = "myApp/category_filter_list.html"
+    template_name = "myApp/filter_list.html"
 
+    def get_queryset(self):
+        return super().get_queryset()
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        category_id = self.kwargs.get('pk')
-        context['category'] = Category.objects.get(id=category_id)
+        context['form'] = FilterForm        
         return context
       
 

@@ -3,14 +3,14 @@
 {% block content %}
   <div class="container text-center mt-5">
     <h1 class="display-4">Welcome to the ToDo App</h1>
-    <p class="lead">Manage your tasks and categories effortlessly</p>
+    <p class="lead">Manage your tasks and filter them base on category and priority</p>
     <div class="row justify-content-center mt-4">
       <div class="col-md-4">
         <div class="card shadow-sm">
           <div class="card-body">
-            <h5 class="card-title">Your Categories</h5>
-            <p class="card-text">View and organize tasks by category.</p>
-            <a href="{% url 'myApp:all_tasks' %}" class="btn btn-primary">Browse Categories</a>
+            <h5 class="card-title">All Tasks</h5>
+            <p class="card-text">View and organize tasks by category or priority.</p>
+            <a href="{% url 'myApp:all_tasks' %}" class="btn btn-primary">Browse Tasks</a>
           </div>
         </div>
       </div>

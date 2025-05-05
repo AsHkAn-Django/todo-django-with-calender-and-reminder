@@ -1,17 +1,15 @@
 {% extends 'base.html' %}
+{% load django_bootstrap5 %}
 
 {% block content %}
   <div class="container mt-5">
-    <h2 class="text-center mb-4 text-primary">Categories</h2>
     <div class="list-group mb-5">
-      <a href="{% url 'myApp:all_tasks' %}" class="list-group-item list-group-item-action list-group-item-light py-3 mb-2 rounded-pill fw-bold">
-        <i class="bi bi-house-door-fill"></i> All Tasks
-      </a>
-      {% for category in categories %}
-        <a href="{% url 'myApp:category_filter_list' category.pk %}" class="list-group-item list-group-item-action list-group-item-light py-3 mb-2 rounded-pill fw-semibold">
-          <i class="bi bi-tags-fill"></i> {{ category.title }}
-        </a>
-      {% endfor %}
+           <!-- form -->
+      <form action="" method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <button type="submit" class="btn btn-outline-secondary">Search</button>
+      </form>
     </div>
 
     <h3 class="text-center mb-4 text-success">List of tasks for {{ category }}</h3>
