@@ -50,6 +50,15 @@ class AddCategoryView(generic.CreateView):
     form_class = CategoryForm
     success_url = reverse_lazy('myApp:all_tasks')
     template_name = "myApp/add_category.html"
+    
+    def form_valid(self, form):
+        """Duplicate Checker."""
+        # we didn't use form.cleaned_data['title'] because it raise an error if there is no value
+        category_name = form.cleaned_data.get('title')
+        if Category.objects.filter(title__iexact=category_name).exists():
+            form.add_error('title', 'This category already exists.')
+            return self.form_invalid(form)
+        return super().form_valid(form)
 
 
 
