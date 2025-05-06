@@ -45,43 +45,4 @@
   </div>
 </div>
 
-<!-- Calendar container -->
-<div id="calendar"></div>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const calendarEl = document.getElementById('calendar');
-
-    const calendar = new FullCalendar.Calendar(calendarEl, {
-      headerToolbar: {
-        left: "prev,next today",
-        center: "title",
-        right: "dayGridMonth,dayGridWeek"
-      },
-      initialView: "dayGridMonth",
-      navLinks: true,
-      editable: false,
-      dayMaxEvents: true,
-      events: {
-        url: "{% url 'myApp:task-list-json' %}",
-        failure: function () {
-          alert("There was an error while fetching events!");
-        }
-      },
-    });
-
-    calendar.render();
-  });
-</script>
-
-
-<style>
-  /* Style to center and size the calendar */
-  #calendar {
-    max-width: 900px;
-    margin: 40px auto;
-  }
-</style>
-
-
 {% endblock content %}
