@@ -1,6 +1,6 @@
 from django.urls import reverse_lazy
 from django.views import generic, View
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
 from django.utils import timezone
 from django.http import JsonResponse
 
@@ -110,9 +110,10 @@ class TaskListJson(View):
         for t in tasks:
             events.append({
                 'id': t.id,
-                'title': f"{t.title} ({t.category.title})",
+                'title': t.title,
                 'start': t.deadline.isoformat(),   # ISO date string
                 'allDay': False,                    # treat as timed event
+                'url': f'/tasks/{t.id}/',  
                 'backgroundColor': {
                     '0': '#aaa',  # No Priority
                     '1': '#28a745',  # Normal
@@ -122,4 +123,8 @@ class TaskListJson(View):
             })
 
         return JsonResponse(events, safe=False)
+    
+def task_detail(request, pk):
+    task = get_object_or_404(Task, pk=pk)
+    return render(request, 'myApp/task_detail.html', {'task': task})
 

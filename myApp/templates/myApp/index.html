@@ -1,52 +1,91 @@
-{% extends 'base.html' %}
-
-{% block content %}
-  <div class="container text-center mt-5">
-    <h1 class="display-4">Welcome to the ToDo App</h1>
-    <p class="lead">Manage your tasks and filter them base on category and priority</p>
-    <div class="row justify-content-center mt-4">
-      <div class="col-md-4">
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <h5 class="card-title">All Tasks</h5>
-            <p class="card-text">View and organize tasks by category or priority.</p>
-            <a href="{% url 'myApp:all_tasks' %}" class="btn btn-primary">Browse Tasks</a>
-          </div>
+{% extends 'base.html' %} {% block content %}
+<div class="container text-center mt-5">
+  <h1 class="display-4">Welcome to the ToDo App</h1>
+  <p class="lead">
+    Manage your tasks and filter them base on category and priority
+  </p>
+  <div class="row justify-content-center mt-4">
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">All Tasks</h5>
+          <p class="card-text">
+            View and organize tasks by category or priority.
+          </p>
+          <a href="{% url 'myApp:all_tasks' %}" class="btn btn-primary"
+            >Browse Tasks</a
+          >
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <h5 class="card-title">Add a Task</h5>
-            <p class="card-text">Create new tasks with deadlines.</p>
-            <a href="{% url 'myApp:add_task' %}" class="btn btn-success">Add Task</a>
-          </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Add a Task</h5>
+          <p class="card-text">Create new tasks with deadlines.</p>
+          <a href="{% url 'myApp:add_task' %}" class="btn btn-success"
+            >Add Task</a
+          >
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <h5 class="card-title">Add a Category</h5>
-            <p class="card-text">Create categories to organize your tasks.</p>
-            <a href="{% url 'myApp:add_category' %}" class="btn btn-info">Add Category</a>
-          </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Add a Category</h5>
+          <p class="card-text">Create categories to organize your tasks.</p>
+          <a href="{% url 'myApp:add_category' %}" class="btn btn-info"
+            >Add Category</a
+          >
         </div>
       </div>
-      
     </div>
   </div>
-  
-  <div id='calendar'></div>
+</div>
 
- <script>
+<!-- Calendar container -->
+<div id="calendar"></div>
 
-      document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-          initialView: 'dayGridMonth'
-        });
-        calendar.render();
-      });
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const calendarEl = document.getElementById("calendar");
 
-    </script>
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+      // ✅ v6 uses headerToolbar instead of header
+      headerToolbar: {
+        left: "prev,next today",
+        center: "title",
+        right: "dayGridMonth,dayGridWeek",
+      },
+      initialView: "dayGridMonth",
+      navLinks: true, // click day/week names to navigate
+      editable: false, // disable drag/drop
+      dayMaxEvents: true, // show “+n more” when too many events
+      events: {
+        url: "{% url 'myApp:task-list-json' %}", // Django view returning events
+        failure: function () {
+          alert("There was an error while fetching events!");
+        },
+      },
+      eventClick: function (info) {
+        // Optional: navigate to the task’s detail page
+        if (info.event.url) {
+          info.jsEvent.preventDefault(); // prevent browser from following the link
+          window.location.href = info.event.url;
+        }
+      },
+    });
+
+    calendar.render();
+  });
+</script>
+
+<style>
+  /* Style to center and size the calendar */
+  #calendar {
+    max-width: 900px;
+    margin: 40px auto;
+  }
+</style>
+
 {% endblock content %}

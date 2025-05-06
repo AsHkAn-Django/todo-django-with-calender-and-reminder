@@ -10,5 +10,7 @@ urlpatterns = [
 	path('add_category/', views.AddCategoryView.as_view(), name='add_category'),
     path('edit_task/<int:pk>', views.EditTaskView.as_view(), name='edit_task'),
 	path('add_task/', views.AddTaskView.as_view(), name='add_task'),
+    path('tasks/<int:pk>/', views.task_detail, name='task-detail'),
+    path('api/tasks/', views.TaskListJson.as_view(), name='task-list-json'),
 	path('', views.IndexView.as_view(), name='home'),
 ]
