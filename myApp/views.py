@@ -1,7 +1,8 @@
 from django.urls import reverse_lazy
-from django.views import generic
+from django.views import generic, View
 from django.shortcuts import render
 from django.utils import timezone
+from django.http import JsonResponse
 
 from .models import Task, Category
 from .forms import TaskForm, CategoryForm, FilterForm
@@ -95,3 +96,30 @@ class DeleteTaskView(generic.DeleteView):
     model = Task
     template_name = 'myApp/delete_task.html'
     success_url = reverse_lazy('myApp:all_tasks')
+    
+
+class TaskListJson(View):
+    """
+    Returns all tasks in JSON format suitable for FullCalendar.
+    """
+    def get(self, request, *args, **kwargs):
+        tasks = Task.objects.select_related('category').all()
+
+        # Build a list of event dicts
+        events = []
+        for t in tasks:
+            events.append({
+                'id': t.id,
+                'title': f"{t.title} ({t.category.title})",
+                'start': t.deadline.isoformat(),   # ISO date string
+                'allDay': False,                    # treat as timed event
+                'backgroundColor': {
+                    '0': '#aaa',  # No Priority
+                    '1': '#28a745',  # Normal
+                    '2': '#ffc107',  # Important
+                    '3': '#dc3545',  # Really Important
+                }[t.priority],
+            })
+
+        return JsonResponse(events, safe=False)
+
