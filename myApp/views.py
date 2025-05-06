@@ -99,30 +99,22 @@ class DeleteTaskView(generic.DeleteView):
     
 
 class TaskListJson(View):
-    """
-    Returns all tasks in JSON format suitable for FullCalendar.
-    """
+    """Returns all tasks in JSON format suitable for FullCalendar."""
     def get(self, request, *args, **kwargs):
-        tasks = Task.objects.select_related('category').all()
+        tasks = Task.objects.all()
 
-        # Build a list of event dicts
         events = []
         for t in tasks:
             events.append({
                 'id': t.id,
                 'title': t.title,
-                'start': t.deadline.isoformat(),   # ISO date string
-                'allDay': False,                    # treat as timed event
-                'url': f'/tasks/{t.id}/',  
-                'backgroundColor': {
-                    '0': '#aaa',  # No Priority
-                    '1': '#28a745',  # Normal
-                    '2': '#ffc107',  # Important
-                    '3': '#dc3545',  # Really Important
-                }[t.priority],
+                'start': t.deadline.isoformat(),
+                'allDay': False,
+                'url': f'/tasks/{t.id}/',
             })
 
         return JsonResponse(events, safe=False)
+
     
 def task_detail(request, pk):
     task = get_object_or_404(Task, pk=pk)

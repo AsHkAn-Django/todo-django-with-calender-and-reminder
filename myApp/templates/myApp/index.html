@@ -1,4 +1,6 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} 
+
+{% block content %}
 <div class="container text-center mt-5">
   <h1 class="display-4">Welcome to the ToDo App</h1>
   <p class="lead">
@@ -48,30 +50,22 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    const calendarEl = document.getElementById("calendar");
+    const calendarEl = document.getElementById('calendar');
 
     const calendar = new FullCalendar.Calendar(calendarEl, {
-      // ✅ v6 uses headerToolbar instead of header
       headerToolbar: {
         left: "prev,next today",
         center: "title",
-        right: "dayGridMonth,dayGridWeek",
+        right: "dayGridMonth,dayGridWeek"
       },
       initialView: "dayGridMonth",
-      navLinks: true, // click day/week names to navigate
-      editable: false, // disable drag/drop
-      dayMaxEvents: true, // show “+n more” when too many events
+      navLinks: true,
+      editable: false,
+      dayMaxEvents: true,
       events: {
-        url: "{% url 'myApp:task-list-json' %}", // Django view returning events
+        url: "{% url 'myApp:task-list-json' %}",
         failure: function () {
           alert("There was an error while fetching events!");
-        },
-      },
-      eventClick: function (info) {
-        // Optional: navigate to the task’s detail page
-        if (info.event.url) {
-          info.jsEvent.preventDefault(); // prevent browser from following the link
-          window.location.href = info.event.url;
         }
       },
     });
@@ -80,6 +74,7 @@
   });
 </script>
 
+
 <style>
   /* Style to center and size the calendar */
   #calendar {
@@ -87,5 +82,6 @@
     margin: 40px auto;
   }
 </style>
+
 
 {% endblock content %}
