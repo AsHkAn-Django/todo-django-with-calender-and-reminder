@@ -136,6 +136,6 @@ MY_TWILIO_NUMBER = config("MY_TWILIO_NUMBER")
 MY_PHONE_NUMBER =config("MY_PHONE_NUMBER")
 
 
-# Celery settings
-CELERY_BROKER_URL = "redis://localhost:6379/0"
-result_backend = "redis://localhost:6379/0"
+# Use Redis as broker and backend
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
