@@ -14,3 +14,4 @@ def send_alert_sms(task):
             client.messages.create(to=settings.MY_PHONE_NUMBER,
                                 from_=settings.MY_TWILIO_NUMBER,
                                 body=message)
+            print('A message was sent for an overdue task!')
