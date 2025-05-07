@@ -39,6 +39,7 @@ class AllTasksView(generic.ListView):
     context_object_name = 'tasks'
     template_name = "myApp/all_tasks.html"
     
+    # TODO: use the model method instead 
     def get_queryset(self):
         # get the time of now
         now = timezone.now()
@@ -48,7 +49,6 @@ class AllTasksView(generic.ListView):
         Task.objects.filter(deadline__lte=now, overdue=False).update(overdue=True)
         # and updates the ones which were edited to a new overdue
         Task.objects.filter(deadline__gte=now, overdue=True).update(overdue=False)
-        
         return super().get_queryset()
 
     def get_context_data(self, **kwargs):

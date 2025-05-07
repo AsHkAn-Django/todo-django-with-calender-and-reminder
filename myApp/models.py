@@ -1,5 +1,7 @@
 from django.db import models
 
+from django.utils import timezone
+
 
 class Category(models.Model):
 	title = models.CharField(max_length=264)
@@ -30,6 +32,15 @@ class Task(models.Model):
 	def __str__(self):
 		return self.title
 
-
-
+	def is_overdue(self):
+		# get the time of now
+		now = timezone.now()
+		# Use date__lte(less than or equal) to filter everything before now
+		# and the items which the overdue is false
+		# then update those items to True overdue
+		Task.objects.filter(deadline__lte=now, overdue=False).update(overdue=True)
+		# and updates the ones which were edited to a new overdue
+		Task.objects.filter(deadline__gte=now, overdue=True).update(overdue=False)
+		return self.overdue
+        
 
